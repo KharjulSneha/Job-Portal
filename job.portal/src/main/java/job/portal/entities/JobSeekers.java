@@ -9,14 +9,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class JobSeekers {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String preferences;
-    private int profileScore;
-
+    private Integer profileScore;
     private String profileImagePath;
     private String resumePdfPath;
 
