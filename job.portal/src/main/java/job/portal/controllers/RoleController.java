@@ -2,12 +2,16 @@ package job.portal.controllers;
 
 import job.portal.dto.RoleDTO;
 import job.portal.entities.Role;
+import job.portal.repositories.UserRepository;
 import job.portal.services.RoleService;
+import job.portal.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static job.portal.repositories.UserRepository.*;
 
 @RestController
 @RequestMapping("/api/role")
@@ -15,6 +19,9 @@ public class RoleController {
 
     @Autowired
     private RoleService roleService ;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping
     public ResponseEntity<Role> createRole(@RequestBody Role role){
@@ -34,7 +41,17 @@ public class RoleController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRole(@PathVariable int id){
-        return roleService.deleteRole(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+
+        boolean isRoleInUse = userService.isRoleAssignedToAnyUser(id);
+
+        if (isRoleInUse) {
+            throw new IllegalStateException("Cannot delete role. It is still assigned to users.");
+        }
+
+        boolean deleted = roleService.deleteRole(id);
+        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+
+
     }
 
 }

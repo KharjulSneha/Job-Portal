@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RoleDTO {
 
-    private int roleId;
+    private Long roleId;
     private String roleName;
 }
