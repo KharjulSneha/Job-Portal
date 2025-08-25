@@ -35,6 +35,7 @@ public class UserService {
         user.setUsername(registrationDto.getUsername());
         user.setPassword(new BCryptPasswordEncoder().encode(registrationDto.getPassword()));
         user.setEmail(registrationDto.getEmail());
+        user.setPhoneNo(registrationDto.getPhoneNo());
         user.setCreatedAt(LocalDateTime.now());
         user.setRole(role);
 
